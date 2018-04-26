@@ -1,6 +1,11 @@
 ---
 layout: post
 title: "github page, jekyll로 블로그 시작하기"
+date: 2018-04-26 12:00:00 
+lastmod : 2016-04-26 16:30:00
+sitemap :
+  changefreq : weekly
+  priority : 1.0
 ---
 첫 포스팅을 시작하며
 ===========
