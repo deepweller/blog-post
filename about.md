@@ -1,5 +1,7 @@
 ---
 layout: page
-title: About me
+title: About
+permalink: /about/
 ---
+
 안녕하세요!

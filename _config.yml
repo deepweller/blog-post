@@ -28,9 +28,14 @@ theme: minima
 plugins:
   - jekyll-feed
 
-name: name
-meta_description: meta_description
-
-highlighter: pygments
-logo: false
-paginate: 15
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
