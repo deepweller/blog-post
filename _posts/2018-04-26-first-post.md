@@ -11,6 +11,6 @@ title: "github page, jekyll로 블로그 시작하기"
 이번기회에 git이랑 친해져 봐야겠다는 생각으로 `github pages`로 선택했다.  
 (막상 만들어보니 그렇게 친해지는 것 같진 않다. 첫 포스팅을 하기까지 너무 힘들었어..)  
     
-[![github pages](/assets/images/github-pages-examples.png)](https://pages.github.com/)
+[![github pages](/assets/images/github-pages-examples.png)](https://pages.github.com/){:target="_blank"}
    
-[![jeykll](/assets/images/jekyll.png)](https://jekyllrb.com/)
+[![jeykll](/assets/images/jekyll.png)](https://jekyllrb.com/){:target="_blank"}
