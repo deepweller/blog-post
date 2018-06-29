@@ -43,7 +43,7 @@ shift + enter : 라인 생성 후 새로운 라인 첫줄로 이동(ctrl + shift
 ctrl + f1 : show descriptions of error or warning at caret  
 ctrl + alt + t : 코드 감싸기(if else, try catch, for, synchronized...) > 터미널 켜짐  
 ctrl + alt + l : 코드 정렬(이클립스의 ctrl + shift + f) > 컴퓨터 잠금  
-ctrl + enter : 커서를 여러줄로 나 (ctrl + shift + j 반대)  
+ctrl + enter : 커서를 여러줄로 나누기 (ctrl + shift + j 반대)  
 shift + f1 : 코드에 대한 문서를 인터넷 브라우저로 검색  
 
 ### Action
@@ -77,6 +77,32 @@ shift + f9 : debug
 ctrl + shift + f10 : run context config from editor (현재 에디터의 config를 찾아서 run)  
 
 ### Debugging
+f8 : step over, 라인 넘어가기
+f7 : step into, 해당 메서드로 들어가기, 메서드 아니면 라인 넘어가기
+shift + f7 : smart step into
+shift + f8 : step out
+f9 : resume
+ctrl + f8 : 커서 라인에 breakpoint 생성
+ctrl + shift + f8 : show breakpoint list
+
+##### not work
+alt + f9 : run cursor > os 창 최소화
+alt + f8 : evaluate expression > os
+
+### Navigation
+ctrl + n : 클래스검색
+ctrl + shift + n : file 검색
+ctrl + alt + shift + n : symbol 검색
+
+alt + right/left : 에디터 tab 이동
+
+shift + esc : hide active or last active window(사이드에 있는 뷰)
+
+esc : 에디터로 커서 이동
+
+##### not work
+f12 : go back to previous tool window
+
 
 
 ### 참고
