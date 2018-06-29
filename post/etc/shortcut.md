@@ -30,6 +30,8 @@ ctrl + backspace : 커서 이전으로 단어 단위 삭제
 ctrl + +/- : 커서가 위치한 곳의 코드블럭을 접었다 펴기 (expand,collapse code block)  
 ctrl + shift + +/- : 전체 코드블럭을 접었다 펴기  
 ctrl + f4 : 현재 에디터 탭 끄기  
+ctrl + alt + t : 코드 감싸기(if else, try catch, for, synchronized...)
+ctrl + alt + l : 코드 정렬(이클립스의 ctrl + shift + f)
 
 alt + insert : 코드 생성(getter, setter, constructors, override method(equals, toString...))  
 alt + q : context info (현재 커서가 속한 클래스 정보)  
@@ -41,8 +43,6 @@ shift + enter : 라인 생성 후 새로운 라인 첫줄로 이동(ctrl + shift
 
 ##### not work
 ctrl + f1 : show descriptions of error or warning at caret  
-ctrl + alt + t : 코드 감싸기(if else, try catch, for, synchronized...) > 터미널 켜짐  
-ctrl + alt + l : 코드 정렬(이클립스의 ctrl + shift + f) > 컴퓨터 잠금  
 ctrl + enter : 커서를 여러줄로 나누기 (ctrl + shift + j 반대)  
 shift + f1 : 코드에 대한 문서를 인터넷 브라우저로 검색  
 
@@ -62,9 +62,9 @@ ctrl + shift + m : replace structurally
 ### Usage Search
 ctrl + f7 : find usage in file  
 ctrl + shift + f7 : highlight usage in file  
+alt + f7 : find usage
 
 ##### not work
-alt + f7 : find usage > os 단축키 있음, 마우스 우클릭 해서 선택해야함  
 ctrl + alt + f7 : show usage  
 
 ### Compile and Run
@@ -84,8 +84,6 @@ shift + f8 : step out
 f9 : resume
 ctrl + f8 : 커서 라인에 breakpoint 생성
 ctrl + shift + f8 : show breakpoint list
-
-##### not work
 alt + f9 : run cursor > os 창 최소화
 alt + f8 : evaluate expression > os
 
