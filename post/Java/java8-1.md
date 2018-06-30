@@ -13,7 +13,7 @@ java8에서는 크게 보면 '스트림 API', '메서드에 코드를 전달하�
 >객체의 리턴값으로 리턴 할수 있어야 한다.    
 
  
-메서드 레퍼런스와 람다를 이용해서 메서드에 코드를 넣는 방법을 디렉토리에서 숨겨진 파일을 필터링해서 담는 샘플로 본다.
+다음은 메서드 레퍼런스와 람다를 이용해서 메서드에 코드를 넣는 방법을 디렉토리에서 숨겨진 파일을 필터링하는 샘플이다.
 ```java
 /*
  * new FileFilter() 인스턴스를 생성해서 값을 전달해야 한다.
@@ -36,4 +36,15 @@ File[] hiddenFiles = new File(".").listFiles(File::isHidden);
 //람다식 활용
 File[] hiddenFiles3 = new File(".").listFiles(file -> file.isHidden());
 ```
+다음은 스트림 API를 이용하여 순차,병렬처리 하는 샘플이다.
+```java
+List<Apple> heavyApples = inventory.stream().filter((Apple a) -> a.getWeight() > 150)
+                                            .collect(toList());
 
+List<Apple> heavyApples = inventory.parallelStream().filter((Apple a) -> a.getWeight() > 150)
+                                            .collect(toList());
+```
+
+
+### 참고
+https://medium.com/@lazysoul/functional-programming-%EC%97%90%EC%84%9C-1%EA%B8%89-%EA%B0%9D%EC%B2%B4%EB%9E%80-ba1aeb048059  
