@@ -219,13 +219,22 @@ Thread t = new Thread(() -> System.out.println("java8 in action"));
   
 버튼클릭 등의 이벤트가 발생했을 때의 이벤트 처리이다.(옛날에 이클립스 RCP랑 안드로이드 프로그래밍할 때 많이 해본거 같다.) 마찬가지로 이벤트가 발생했을 때의 전달할 동작을 다음과 같이 작성한다.
 ```java
+//기존
 Button button = new Button("Send");
-button.setOnAction(new EventHandler)
+button.setOnAction(new EventHandler<ActionEvent>() {
+    public void handle(ActionEvent event) {
+        label.setText("Send");
+    }
+});
+
+//java8
+button.setOnAction((ActionEvent event) -> label.setText("Send"));
 ```
 
 ### 마치며
 chapter2는 기존 java8 이전에서의 동작파라미터를 어떻게 구현했는지를 알아봤다. 기존에는 함수를 인자로 넘기려면 이렇게나 많은 코드와 귀찮은 작업이나 개념을 많이 알아야한다고 알려준다. 일단 람다를 활용한 마지막 코드만 봐도 코드가 많이 간결해 보인다. 이제 다음 chapter부터 람다, 메서드 레퍼런스, 스트림, 병렬 등등 java8의 특성을 본격적으로 알아보는 것 같다. 이번장 까지는 워밍업이다.  
-요약 : 이전 버전은 구려, 이거봐바 그치? java8은 이렇게나 간단해! ㅇㅈ?   
+  
+요약 : 이전 버전은 구려, 이거봐바. 지저분하잖아. 그치? java8은 이렇게나 간단해! 봤지? 써.   
 
 ### 참고
 (뜬금없는 제네릭 검색)  
