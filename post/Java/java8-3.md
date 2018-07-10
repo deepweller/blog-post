@@ -83,7 +83,53 @@ hello 2
 hello 3  
 가 차례로 출력된다. 위 코드의 `r1` 과 마지막 `process`를 보면 람다식 자체가 `r2`의 `new Runnable()` 과 같이 인터페이스의 인스턴스가 되어 `process(Runnable r)`의 파라미터로 전달됨을 볼 수 있다. **람다식은 함수형 인터페이스의 인스턴스이며 메서드의 파라미터로 전달된다.**
 
-###
+> `@FunctionalInterface` : 함수형 인터페이스를 명시하는 어노테이션이다. 추상 메서드가 하나 이상이면 컴파일에러가 난다.
+
+함수형 인터페이스와 람다식을 이용한 샘플을 하나 실행해본다.
+```java
+//java8 이전의 코드
+public static String processFile() throws IOException {
+    try (BufferedReader br = new BufferedReader(new FileReader("test.txt"))) {
+        return br.readLine(); //파일을 읽어와서 한 줄을 읽어서 리턴한다.
+    }
+}
+```
+이 코드에서 한줄이 아닌 두줄을 연속하여 읽고 싶다고 생각해보고 이를 단계별로 변경시켜 보자. 먼저 람다식을 사용하여 두줄을 읽어본다.
+```java
+String twoLines = processFile((BufferedReader b) -> b.readLine() + b.readLine());
+```
+다음으로는 `processFile()` 메서드에 코드를 전달하기 위해 파라미터로 사용할 함수형 인터페이스를 생성한다.
+```java
+@FunctionalInterface
+public interface BufferedReaderProcessor{
+    //추상메서드를 한개 가지는 함수형 인터페이스이다.
+    //이 추상메서드는 BufferedReader 형의 파라미터 하나를 받고 String 을 리턴한다.
+	public String process(BufferedReader b) throws IOException;
+}
+```
+이렇게 인터페이스를 생성하여 `processFile` 메서드의 파라미터로 추가한다.
+```java
+public static String processFile(BufferedReaderProcessor p) throws IOException {
+	try(BufferedReader br = new BufferedReader(new FileReader("test.txt"))){
+		//...
+	}
+}
+```
+이제는 `processFile`메서드로 전달된 함수형 인터페이스의 인스턴스(람다식)를 처리해야한다.
+```java
+public static String processFile(BufferedReaderProcessor p) throws IOException {
+	try(BufferedReader br = new BufferedReader(new FileReader("test.txt"))){
+        //BufferedReaderProcessor의 추상메서드를 이용하여 BufferedReader 형의 파라미터를 받아 String 리턴하도록 한다.
+		return p.process(br); 
+	}
+}
+```
+이제 위에서 사용한 람다식을 전달하면 된다. 전체코드이다.
+
+
+### java.util.function
+
+
 
 ### 마치며
 
