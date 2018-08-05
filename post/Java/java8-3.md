@@ -85,54 +85,177 @@ hello 3
 
 > `@FunctionalInterface` : 함수형 인터페이스를 명시하는 어노테이션이다. 추상 메서드가 하나 이상이면 컴파일에러가 난다.
 
-함수형 인터페이스와 람다식을 이용한 샘플을 하나 실행해본다.
+### java.util.function
+**Predicate** (java.util.function.Predicate<T>)  
+`test`라는 추상 메서드가 정의되어 있고 `boolean`을 리턴한다. 불린 표현식이 필요한 상황에서 사용한다.
 ```java
-//java8 이전의 코드
-public static String processFile() throws IOException {
-    try (BufferedReader br = new BufferedReader(new FileReader("test.txt"))) {
-        return br.readLine(); //파일을 읽어와서 한 줄을 읽어서 리턴한다.
+public static <T> List<T> filter(List<T> list, Predicate<T> p) {
+    List<T> results = new ArrayList<>();
+    for(T s : list) {
+        if(p.test(s)) results.add(s);
+    }
+    return results;
+}
+
+Predicate<String> nonEmptyStringPredicate = (String s) -> !s.isEmpty();
+List<String> nonEmpty = filter(listOfStrings, nonEmptyStringPredicate);
+```
+
+**Consumer** (java.util.function.Consumer<T>)  
+`accept`라는 추상메서드가 정의되어 있고 T형식의 객체를 받아 특정 동작을 수행한다.
+```java
+public static <T> void forEach(List<T> list, Consumer<T> c) {
+    for(T i : list) {
+        c.accept(i);
     }
 }
+
+forEach(
+    Arrays.asList(1,2,3,4,5),
+    (Integer i) -> System.out.println(i)
+);
 ```
-이 코드에서 한줄이 아닌 두줄을 연속하여 읽고 싶다고 생각해보고 이를 단계별로 변경시켜 보자. 먼저 람다식을 사용하여 두줄을 읽어본다.
+
+**Function** (java.util.function.Function<T, R>)  
+T를 받아서 R을 리턴하는 `apply`라는 추상메서드가 정의되어 있다. 입력을 출력으로 매핑하는 람다를 정의할 때 사용할 수 있다.
 ```java
-String twoLines = processFile((BufferedReader b) -> b.readLine() + b.readLine());
+public static <T, R> List<R> map(List<T>, Function<T, R> f) {
+    List<R> result = new ArrayList<>();
+    for(T s : list) {
+        result.add(f.apply(s));
+    }
+    return result;
+}
+
+List<Integer> l = map(
+                        Arrays.asList("lambdas", "in", "action"),
+                        (String s) -> s.length()
+                        );
 ```
-다음으로는 `processFile()` 메서드에 코드를 전달하기 위해 파라미터로 사용할 함수형 인터페이스를 생성한다.
+
+#### 박싱, 언박싱, 오토박싱  
+`primitive type`을 `wrapper class`로 변환하는 기능을 박싱이라 하고, 그 반대는 언박싱이다. 오토박싱은 박싱과 언박싱이 자동으로 이루어지는 기능이다.  
+하지만 class는 힙에 저장되므로 메모리를 더 사용하게되고, 탐색하는 과정도 필요해진다. java8에서는 오토박싱을 피할 수 있는 함수형 인터페이스를 제공한다. 기존 함수형 인터페이스의 이름 앞에 자료형명이 붙는다.  
+   
+Predicate : IntPredicate, LongPredicate...  
+Counsumer : IntCounsumer...  
+...
+  
 ```java
-@FunctionalInterface
-public interface BufferedReaderProcessor{
-    //추상메서드를 한개 가지는 함수형 인터페이스이다.
-    //이 추상메서드는 BufferedReader 형의 파라미터 하나를 받고 String 을 리턴한다.
-	public String process(BufferedReader b) throws IOException;
+IntPredicate evenNum = (int i) -> i % 2 == 0;
+evenNum.test(1000); // true (박싱 x)
+
+Predicate<Integer> oddNum = (Integer i) -> i % 2 == 1;
+oddNum.test(1000); // false (박싱 o)
+```
+
+#### 형식추론
+컴파일러는 람다표현식의 컨택스트를 이용해서 관련된 함수형 인터페이스를 추론한다. 즉 함수의 정의를 알 수 있으므로 파라미터까지 추론이 가능하기 때문에 생략이 가능해진다. 상황에 따라 가독성을 위해 생략하거나 유지하면 된다.
+```java
+List<Apple> apples = filter(inventory, a -> "green".equals(a.getColor())); // a 에 Apple을 명시하지 않음
+
+Comparator<Apple> c = (a1, a2) -> a1.getWeight().compareTo(a2.getWeight()); // 마찬가지로 Apple을 명시하지 않음
+```
+
+#### 람다 캡처링
+람다식에 지역변수를 사용하는 것을 람다 캡처링이라 한다. 하지만 지역변수는 재할당이 되서는 안되고 `final`로 선언이 되어있거나, final과 다름없이(선언 이후 재할당이 없는) 사용되고 있는 지역변수만 할당이 가능하다.
+```java
+int a = 123;
+Runnable r = () -> System.out.println(a); // ok
+
+int b = 456;
+Runnable r = () -> System.out.println(b); // error
+b = 789;
+```
+
+#### 메서드 레퍼런스
+메서드 레퍼런스는 특정 메서드만을 호출하는 람다의 축약형이다. 메서드 레퍼런스는 메서드 앞에 `::`를 붙인다. 예를 들어 `Apple::getWeigth`는 `Apple` 클래스에 정의된 `getWeight`의 메서드 레퍼런스다.  
+메서드 레퍼런스는 3가지 유형이 있다.  
+1. 정적 메서드 레퍼런스
+1. 다양한 형식의 인스턴스 메서드 레퍼런스
+1. 기존 객체의 인스턴스 메서드 레퍼런스
+
+```java
+//1
+(args) -> ClassName.staticMethod(args);
+ClassName::staticMethod;
+
+//2
+(arg0, rest) -> arg0.instanceMethod(rest); //arg0 : ClassName
+ClassName::instanceMethod;
+
+//3
+(args) -> expr.instanceMethod(args);
+expr::instanceMethod;
+```
+
+컴파일러는 메서드 레퍼런스가 주어진 함수형 인터페이스와 호환하는지 확인한다. 메서드 레퍼런스는 컨텍스트의 형식과 일치해야 한다.
+
+> 함수 디스크립터  
+> Comparator 의 경우 (T, T) -> int 가 함수 디스크립터
+
+```java
+
+Function<String, Integer> stringToInteger = (String s)
+ -> Integer.parseInt(s);
+
+//위 람다식은 자신의 인수를 Integer의 정적 메서드인 parseInt로 전달한다.
+//이 메서드는 String을 인수로 받아 파싱한 후 Integer를 리턴한다.
+Function<String, Integer> stringToInteger = Integer::parsInt;
+
+BiPredicate<List<String>, String> contains = (list, element) -> list.contains(element);
+
+//이 람다식은 첫 번째 인수의 contains 메서드를 호출한다.
+//첫 번째 인수가 List이므로 다음과 같이 작성한다.
+BiPredicate<List<String>, String> contains = List::contains;
+```
+
+#### 생성자 레퍼런스
+클래스 명과 `new`키워드로 생성자 레퍼런스를 만들 수 있다.
+```java
+Supplier<Apple> c1 = Apple::new; //생성자 레퍼런스
+Apple a1 = c1.get(); //NoArgsConstructor
+//기존코드
+Supplier<Apple> c1 = () -> new Apple();
+```
+위 코드는 생성자에 인수가 없는 경우이다. 아래는 인수가 있는 경우이다.
+```java
+Function<Integer, Apple> c1 = Apple::new; //생성자 레퍼런스
+Apple a1 = c1.apply(110);
+//기존코드
+Function<Integer, Apple> c1 = (weight) -> new Apple(weight);
+```
+아래 코드는 위 내용을 응용하여 리스트에 있는 숫자를 무게로 가지는 Apple객체를 생성하는 코드이다.
+```java
+List<Integer> weights = Arrays.asList(1,2,3,4);
+List<Apple> apples = map(weights, Apple:new);
+
+public static List<Apple> map(List<Integer> list, Function<Integer, Apple> f) {
+    List<Apple> result = new ArrayList<>();
+    for(Integer e : list) {
+        result.add(f.apply(e));
+    }
+    return result;
 }
 ```
-이렇게 인터페이스를 생성하여 `processFile` 메서드의 파라미터로 추가한다.
+아래 코드는 위 예제를 더 응용해서 다양한 무게 + 다양한 과일을 생성하는 코드이다.
 ```java
-public static String processFile(BufferedReaderProcessor p) throws IOException {
-	try(BufferedReader br = new BufferedReader(new FileReader("test.txt"))){
-		//...
-	}
+static Map<String, Function<Integer, Fruit>> map = new HashMap<>();
+static {
+    map.put("apple", Apple::new);
+    map.put("orange", Orange::new);
+    //..등
+}
+
+public static Fruit createFruit(String fruit, Integer weight) {
+    return map.get(fruit.toLowerCase()) //과일에 맞는Funtion 객체를 얻는다.
+                                .apply(weight);
 }
 ```
-이제는 `processFile`메서드로 전달된 함수형 인터페이스의 인스턴스(람다식)를 처리해야한다.
-```java
-public static String processFile(BufferedReaderProcessor p) throws IOException {
-	try(BufferedReader br = new BufferedReader(new FileReader("test.txt"))){
-        //BufferedReaderProcessor의 추상메서드를 이용하여 BufferedReader 형의 파라미터를 받아 String 리턴하도록 한다.
-		return p.process(br); 
-	}
-}
-```
-이제 위에서 사용한 람다식을 전달하면 된다. 전체코드이다.
-
-
-### java.util.function
-
-
 
 ### 마치며
-
+이번장에서는 람다식, 메서드레퍼런스, 생성자레퍼런스의 동작에 방식에 대해 자세히 봤다. 또 앞장에서 봤던 람다식과 메서드레퍼런스 샘플들을 다시 봤다. 사용법과 동장방식을 봤지만 실제 적용을 하는데는 많은 연습이 필요할 것 같다. 함수형 프로그래밍이 익숙해질 시간이 필요할 것 같다.  
+이번 장은 글을 쓰다가 중간에 너무 방치해두다가 한달 가까이 지난 후에 다시 이어서 썼다. 그러다보니 중간에 맥락이 끊기는 느낌이 들 수 있다. 어쩃든 다시 꾸준히 써야겠다.
 
 ### 참고
- 
+only 책
