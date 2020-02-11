@@ -4,8 +4,8 @@
 
 ### 개요
 
-* Feign : http(rest) 기반 서비스 호출을 추상화한 spirng cloud 라이브러리
-* Hystrix : 방화벽역할
+* Feign : http(rest)기반 서비스 호출을 추상화한 라이브러리
+* Hystrix : msa 구조에서 특정 서버의 장애가 다른 서버로 전파되거나, 영향을 주지 않도록 서킷브레이커 기능을 하는 라이브러리
 
 ### 의존성추가
 
@@ -79,3 +79,4 @@ public class FeignServiceImpl implements FallbackFactory<FeignService> {
 * https://spring.io/projects/spring-cloud-openfeign
 * https://supawer0728.github.io/2018/03/11/Spring-Cloud-Feign/
 * https://velog.io/@skyepodium/2019-10-06-1410-%EC%9E%91%EC%84%B1%EB%90%A8
+* https://brunch.co.kr/@springboot/262
