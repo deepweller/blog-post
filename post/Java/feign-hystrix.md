@@ -14,7 +14,7 @@
 ```groovy
 dependencyManagement {
   imports {
-    mavenBom 'spring-cloud-dependencies:Finchley.M7'
+    mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Greenwich.RELEASE'
   }
 }
 
