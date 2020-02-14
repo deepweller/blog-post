@@ -3,6 +3,7 @@
 ## 목록
 
 * [Flex](#flex)
+* [z-index](#z-index)
 * [VH, VW](#vh-vw)
 
 ### Flex
@@ -59,6 +60,28 @@ footer 하단 고정 시 flex를 사용
 
 * https://heropy.blog/2018/11/24/css-flexible-box/
 * https://alikerock.tistory.com/270
+
+### z-index
+
+position 속성에 의해 아이템들끼리 겹쳐지는 경우 위에 배치할 순서를 정하는 속성
+* 숫자가 클수록 상단에 오는 아이템
+* 마이너스 가능
+
+#### Sample
+
+헤더를 고정하기 위해 `position: fixed;`를 사용했는데, 컨텐츠를 스크롤할 때 헤더를 가리는 경우가 생김.  
+* z-index 속성으로 헤더를 가장 높은 값을 줘서 헤더가 가려지지 않도록 함.
+
+```css
+header {
+  position: fixed;
+  z-index: 999;
+}
+```
+
+#### 참고
+
+* https://homzzang.com/b/css-113
 
 ### VH VW
 
