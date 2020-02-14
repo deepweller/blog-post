@@ -58,6 +58,7 @@ footer 하단 고정 시 flex를 사용
 #### 참고
 
 * https://heropy.blog/2018/11/24/css-flexible-box/
+* https://alikerock.tistory.com/270
 
 ### VH VW
 
