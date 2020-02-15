@@ -12,6 +12,16 @@
 
 > `display: flex;`
 
+#### align-items, align-content, align-self
+
+3개가 다 비슷한 느낌이여서 헷갈렸음. 각각의 기능은
+
+* align-items : 세로축 정렬
+* align-content : `flex-wrap` 설정으로 두줄 이상인 경우의 세로축 정렬
+* align-self : 각 아이템들이 `align-items` 에 의해 정렬된 개별 아이템 공간 내에서 정렬
+
+즉, `flex-direction`, `justify-content` 설정과 함께 일반적으로 세로축 정렬에 사용하는 옵션은 `align-items` 속성이다.
+
 #### flex-direction
 
 아이템을 배치하는 주축(main-axis)를 결정
@@ -91,6 +101,8 @@ viewport의 높이값과 너비값의 비율 단위 (1/100)
   * 100vh == 최대값
   * 1vh == 10px
 * 너비도 마찬가지
+* 연산도 가능
+  * `height: calc(100vh - 150px);`
 
 #### 참고
 
