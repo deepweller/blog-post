@@ -50,3 +50,7 @@ Connection: keep-alive
 test/1234
 ```
 
+**참고**
+
+* https://developer.mozilla.org/ko/docs/Web/HTTP/Headers/Transfer-Encoding
+* https://b.pungjoo.com/entry/Transfer-Encoding-chunked-VS-Content-Length
