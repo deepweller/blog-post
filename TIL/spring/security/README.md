@@ -7,8 +7,8 @@
 
 ## Configuration
 
-## Autentication
+## Authentication
 
-## AutenticationToken
+## Authentication token
 
 ## Filter chain
