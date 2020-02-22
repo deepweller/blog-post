@@ -68,9 +68,11 @@ SSO(Single Sign On) : 단일 인증으로 여러 애플리케이션에 인증하
   * 토큰 기반 인증
   * 기타등등
 
-#### vue admin element 에서의 SSO
+#### 구현 절차
 
-vue 관련, 특히 vue-admin-element 관련 자료는 중국어가 대부분이다.. 번역기가 필수 !
+* 서버인증은 기본적으로 spring security를 사용하고, 각종 커스텀 인증, 토큰, 필터등을 추가해서 요청을 검증함
+  * sso뿐만 아니라 스프링에서 회원, 인증관련 로직은 security 기반으로 구현
+* 클라이언트 인증은 vue-admin-element에 구현되어있는 permission, user 등을 이용하여 구현
 
 1. 다른 사이트에서 로그인 하여 인증을 한다.
     1. 다른 사이트에서 인증으로 생긴 쿠키 기반으로 sso를 구현한다.
@@ -86,10 +88,10 @@ vue 관련, 특히 vue-admin-element 관련 자료는 중국어가 대부분이�
     1. 두 쿠키가 모두 유효하면 `Admin-Token` 쿠키를 생성해준다.
 1. `Admin-Token` 토큰으로 프론트에서 인증작업을 하고, 원하는 페이지로 리다이렉트 시켜준다.
 
-#### 구현방법
+#### vue admin element 에서의 SSO
 
-* 서버인증은 spring security 를 사용하고, custom filter를 추가해서 요청을 검증함
-* vue-element-admin 내의 인증방식은 아래 링크를 참고해서 수정
+vue 관련, 특히 vue-admin-element 관련 자료는 중국어가 대부분이다.. 번역기가 필수 !
+
 * /permission.js
 
 ```javascript
