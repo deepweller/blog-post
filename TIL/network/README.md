@@ -3,6 +3,7 @@
 ## 목록
 
 * [HTTP](#HTTP)
+* [SSO](#SSO)
 
 ### HTTP
 
@@ -54,3 +55,85 @@ test/1234
 
 * https://developer.mozilla.org/ko/docs/Web/HTTP/Headers/Transfer-Encoding
 * https://b.pungjoo.com/entry/Transfer-Encoding-chunked-VS-Content-Length
+
+### SSO
+
+SSO(Single Sign On) : 단일 인증으로 여러 애플리케이션에 인증하는 방식
+
+* 여러 서비스에 여러번 인증하는 불편함을 줄여줌
+* 대표적으로 구글 애플리케이션은 모두 최초 구글계정으로 로그인이 되어있으면, 지메일, 구글드라이브 등 추가적인 인증없이 사용이 가능하다.
+* 일반 서비스 외에도 사내 시스템에서도 통합인증을 사용할 수 있다.
+* SSO를 인증하는 방식은 다양하다.  (Cookie, JWT, OAuth 등..)
+  * 별도 에이전트에서 인증
+  * 토큰 기반 인증
+  * 기타등등
+
+#### vue admin element 에서의 SSO
+
+vue 관련, 특히 vue-admin-element 관련 자료는 중국어가 대부분이다.. 번역기가 필수 !
+
+1. 다른 사이트에서 로그인 하여 인증을 한다.
+    1. 다른 사이트에서 인증으로 생긴 쿠키 기반으로 sso를 구현한다.
+    1. 먼저 인증된 사이트를 A, sso 방식으로 새로 접근할 사이트를 B라 한다.
+    1. A 사이트에서 로그인한 결과로 `AUTH` 라는 쿠키가 생성된다.
+1. A 에서 B 의 특정 페이지로 접근한다.
+    1. vue-admin-element는 기본적으로 `Admin-Token` 이라는 쿠키값을 사용하여 권한 로직이 구현되어 있다.
+    1. A 에서 B 로 접근할 때 쿼리스트링이나 다른 기타 방법들로 `Admin-Token` 쿠키에 들어갈 value를 담아서 전달한다.
+    1. vue-admin-element 에서 기본적으로 / 경로에서 리다이렉트 경로를 결정하기 때문에 원하는 리다이렉트 경로도 같이 전달한다.
+1. 특정 어드민 페이지로 접근했을 경우 보유한 쿠키로 서버에서 인증작업을 한다.
+    1. spring security custom filter chain 에서 `AUTH`가 유효한 쿠키인지 검증한다.
+    1. `Admin-Token` value가 적절한 값인지 검증한다.
+    1. 두 쿠키가 모두 유효하면 `Admin-Token` 쿠키를 생성해준다.
+1. `Admin-Token` 토큰으로 프론트에서 인증작업을 하고, 원하는 페이지로 리다이렉트 시켜준다.
+
+#### 구현방법
+
+* 서버인증은 spring security 를 사용하고, custom filter를 추가해서 요청을 검증함
+* vue-element-admin 내의 인증방식은 아래 링크를 참고해서 수정
+* /permission.js
+
+```javascript
+router.beforeEach(async(to, from, next) => {
+  // start progress bar
+  NProgress.start()
+
+  // set page title
+  document.title = getPageTitle(to.meta.title)
+
+  // determine whether the user has logged in
+  const hasToken = getToken()
+
+  // 인증 토큰이 있는 경우
+  if (hasToken) {
+    // 기존 로직과 동일
+  } else {
+    // 인증 토큰이 없는 경우
+    if (whiteList.indexOf(to.path) !== -1) {
+      next()
+    } else {
+      const param = param2Obj(window.location.href)
+      //유효한 토큰
+      if (param.token) {
+        store.dispatch('user/setSSOUserToken', param.token)
+        next(`/login?redirect=${param.path}`)
+      } else {
+        next(`/login?redirect=${param.path}`)
+      }
+    }
+  }
+})
+```
+
+* store/modules/user.js
+
+```javascript
+setSSOUserToken({ commit }, ssouserToken) {
+    commit('SET_TOKEN', ssouserToken )
+    setToken(ssouserToken)
+  }
+```
+
+#### 참고
+
+* https://github.com/PanJiaChen/vue-element-admin/issues/1188
+* https://www.cnblogs.com/hwubin5/p/11914958.html
