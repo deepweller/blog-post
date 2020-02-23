@@ -113,14 +113,17 @@ router.beforeEach(async(to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {
-      const param = param2Obj(window.location.href)
-      //유효한 토큰
-      if (param.token) {
-        store.dispatch('user/setSSOUserToken', param.token)
-        next(`/login?redirect=${param.path}`)
+      const queryStr = getQueryObject(window.location.href);
+
+      if (queryStr.token) {
+        //토큰이 존재하면 같이 넘어온 존재하면url로 리다이렉트
+        store.dispatch('user/setSSOUserToken', queryStr.token)
+        next(`/${queryStr.url}`)
       } else {
-        next(`/login?redirect=${param.path}`)
+        next(`/login?redirect=${to.path}`)
       }
+
+      NProgress.done()
     }
   }
 })
