@@ -7,6 +7,38 @@
 
 ## Configuration
 
+다양한 시큐리티 설정을 메서드 체이닝 형태로 할 수 있다.
+
+- url 별로 접근 권한 부여 가능
+- 로그인, 로그아웃 설정 가능
+- resource 파일 인증 제외 가능
+- 기타 등등
+
+```java
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/resources/**", "/*.ico");
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/admin/**").access("hasRole('ADMIN')")
+                .antMatchers("/user/**").access("hasAnyRole('ADMIN', 'USER')")
+                .anyRequest().permitAll()
+                .and()
+
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .and()
+
+                .logout()
+                .logoutSuccessUrl("/");
+    }
+```
+
 ## Authentication token
 
 extends `AbstractAuthenticationToken`
