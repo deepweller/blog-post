@@ -15,6 +15,8 @@
 - 기타 등등
 
 ```java
+@Configuration
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/resources/**", "/*.ico");
@@ -37,6 +39,7 @@
                 .logout()
                 .logoutSuccessUrl("/");
     }
+}
 ```
 
 ## Authentication token
@@ -71,6 +74,7 @@ extends `AbstractAuthenticationToken`
   * 이거때매 개고생함
 
 ```java
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
