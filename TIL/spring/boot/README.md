@@ -91,3 +91,6 @@ spring:
     caffeine:
       spec: maximumSize=500, expireAfterAccess=180s
 ```
+**참고**
+
+* http://wonwoo.ml/index.php/post/1551
