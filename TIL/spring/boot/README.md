@@ -6,7 +6,7 @@
 
 ### Cache
 
-스프링 부트에서는 다양한 캐시 저장소를 쉽게 사용할 수 있도록 추상화 되어있다. `@Cacheable`, `@CacheEvict` 과 같이 쉽게 데이터를 캐싱하고 지울 수 있다.
+스프링 부트에서는 다양한 캐시 저장소를 쉽게 사용할 수 있도록 추상화 되어있다. `@Cacheable`, `@CacheEvict`와 같은 어노테이션으로 쉽게 데이터를 캐싱하고 지울 수 있다.
 
 #### 사용
 
@@ -75,7 +75,7 @@ public class ExampleUtil() {
 
 #### Caffeine cache
 
-caffeine 캐시는 redis와는 다르게 별도로 저장소가 있지 않고 jvm 메모리 상에 캐싱 데이터를 저장한다. 그래서 별도로 환경을 구성할 필요 없이 자바, 스프링 환경에서 쉽게 사용할 수 있는 인메모리 캐시이다. 공식문서 : https://github.com/ben-manes/caffeine
+caffeine 캐시는 redis와는 다르게 별도로 저장소가 있지 않고 jvm 메모리 상에 캐싱 데이터를 저장한다. 그래서 별도로 환경을 구성할 필요 없이 자바, 스프링 환경에서 간단하게 사용할 수 있는 인메모리 캐시이다. 공식문서 : https://github.com/ben-manes/caffeine
 
 * 의존성 추가 (버전은 https://mvnrepository.com/ 에서 참고)
 
